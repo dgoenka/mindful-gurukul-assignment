@@ -48,9 +48,10 @@ export default function Home() {
           >
             <div className={"flex flex-col items-center justify-center"}>
               <input
-                className="rounded-full p-2 w-4/5 font-rem text-3xl"
+                className="rounded-full p-4 w-full font-rem text-xl"
                 type="email"
                 name="email"
+                placeholder="Email"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.email}
@@ -59,9 +60,10 @@ export default function Home() {
             </div>
             <div className={"flex flex-col items-center justify-center"}>
               <input
-                className="rounded-full p-2 w-4/5 font-rem text-3xl"
+                className="rounded-full p-4 w-full font-rem text-xl"
                 type="password"
                 name="password"
+                placeholder="Password"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.password}
@@ -69,7 +71,7 @@ export default function Home() {
               {errors.password && touched.password && errors.password}
             </div>
             <AuthButton type="submit" disabled={isSubmitting}>
-              Submit
+              Login
             </AuthButton>
           </form>
         )}
