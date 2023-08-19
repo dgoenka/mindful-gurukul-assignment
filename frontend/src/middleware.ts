@@ -14,7 +14,7 @@ export function middleware(request: NextRequest) {
     if(!requestHeaders.has("authentication")){
         if(!OPEN_ROUTES.includes(request.nextUrl.pathname)){
             console.log("redirecting to login");
-            redirect(`/login?postLoginUrl=${encodeURIComponent(request.nextUrl.pathname)}`);
+            return NextResponse.redirect(new URL(`/login?postLoginUrl=${encodeURIComponent(request.nextUrl.pathname)}`, request.url));
         }
     } else {
         if(request.nextUrl.pathname==="/"){
