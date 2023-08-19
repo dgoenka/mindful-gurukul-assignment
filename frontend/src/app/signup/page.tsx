@@ -1,7 +1,10 @@
 "use client";
 import { Formik } from "formik";
 import { AuthButton } from "@/components/AuthButton";
-export default function Home() {
+import { ReactSearchAutocomplete } from "react-search-autocomplete";
+import { set } from "zod";
+
+export default function SignUp() {
   return (
     <main className="w-100 h-auto min-h-screen flex flex-col items-center justify-center p-24 gap-12">
       <h2 className={"font-rem text-5xl"}>Sign Up</h2>
@@ -17,6 +20,26 @@ export default function Home() {
           ) {
             errors.email = "Invalid email address";
           }
+          if (!values.password) {
+            errors.password = "Enter a password";
+          }
+          if (!values.confirm_password) {
+            errors.password = "Reenter the password";
+          }
+          if (!(values.password === values.confirm_password)) {
+            errors.password = "Passwords don't match";
+          }
+          if (!values.gender) {
+            errors.gender = "Please select an option";
+          }
+          if (!values.how_hear) {
+            errors.how_hear = "Please select an option";
+          }
+
+          if (values.how_hear === "Other" && !values.how_hear_other) {
+            errors.how_hear_other = "Please mention other source";
+          }
+
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
@@ -35,6 +58,9 @@ export default function Home() {
           touched,
           // @ts-ignore
           handleChange,
+
+          // @ts-ignore
+          setFieldValue,
           // @ts-ignore
           handleBlur,
           // @ts-ignore
@@ -73,7 +99,7 @@ export default function Home() {
 
             <div className={"w-full flex flex-col items-center justify-center"}>
               <input
-                className="rounded-full p-4 w-full font-rem text-xl"
+                className="rounded-full p-4 w-full font-rem text-xl text-black"
                 type="password"
                 name="password"
                 placeholder="Password"
@@ -85,7 +111,7 @@ export default function Home() {
             </div>
             <div className={"w-full flex flex-col items-center justify-center"}>
               <input
-                className="rounded-full p-4 w-full font-rem text-xl"
+                className="rounded-full p-4 w-full font-rem text-xl text-black"
                 type="password"
                 name="confirm_password"
                 placeholder="Confirm Password"
@@ -173,6 +199,60 @@ export default function Home() {
                     errors.how_hear_other}
                 </div>
               )}
+            </div>
+            <div
+              className={
+                "w-full flex flex-col gap-5 items-center justify-center"
+              }
+            >
+              <ReactSearchAutocomplete
+                fuseOptions={{ keys: ["name"] }} // Search on both fields
+                resultStringKeyName="name" // String to display in the results
+                onSelect={(item) => setFieldValue("country", item.name)}
+                showIcon={false}
+                items={[
+                  { id: 0, name: "United States of America" },
+                  { id: 1, name: "United Kingdom" },
+                  { id: 2, name: "India" },
+                ]}
+                className={"w-full rounded-full w-full font-rem text-xl"}
+                placeholder={"Country"}
+                styling={{
+                  zIndex: 8,
+                }}
+              />
+              <ReactSearchAutocomplete
+                fuseOptions={{ keys: ["name"] }} // Search on both fields
+                resultStringKeyName="name" // String to display in the results
+                onSelect={(item) => setFieldValue("state", item.name)}
+                showIcon={false}
+                items={[
+                  { id: 0, name: "Gujarat" },
+                  { id: 1, name: "Maharashtra" },
+                ]}
+                className={"w-full rounded-full w-full font-rem text-xl"}
+                placeholder={"State"}
+                styling={{
+                  zIndex: 5,
+                }}
+              />
+              <ReactSearchAutocomplete
+                fuseOptions={{ keys: ["name"] }} // Search on both fields
+                resultStringKeyName="name" // String to display in the results
+                onSelect={(item) => setFieldValue("city", item.name)}
+                showIcon={false}
+                items={[
+                  { id: 0, name: "Mumbai" },
+                  { id: 1, name: "Pune" },
+                  { id: 2, name: "Delhi" },
+                ]}
+                className={"w-full rounded-full  w-full font-rem text-xl"}
+                placeholder={"City"}
+                styling={{
+                  zIndex: 2,
+                }}
+              />
+              {errors.location && touched.location && errors.location}
             </div>
             <AuthButton type="submit" disabled={isSubmitting}>
               Save
