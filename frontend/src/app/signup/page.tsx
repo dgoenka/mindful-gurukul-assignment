@@ -2,9 +2,10 @@
 import { Formik } from "formik";
 import { AuthButton } from "@/components/AuthButton";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
-import { set } from "zod";
+import { useRouter } from "next/router";
 
 export default function SignUp() {
+  const router = useRouter();
   return (
     <main className="w-100 h-auto min-h-screen flex flex-col items-center justify-center p-24 gap-12">
       <h2 className={"font-rem text-5xl"}>Sign Up</h2>
@@ -42,11 +43,10 @@ export default function SignUp() {
 
           return errors;
         }}
-        onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 400);
+        onSubmit={async (values, { setSubmitting }) => {
+          alert(JSON.stringify(values, null, 2));
+          router.push("dashboard");
+          setSubmitting(false);
         }}
       >
         {({
