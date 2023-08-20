@@ -8,6 +8,8 @@ scripts:
     # copy & link .env file
     - cp .env.dist backend/.env
     - ln -s backend/.env .env
+    # add shared dependancy
+    - cd backend && npx relative-deps add ../shared && cd ..
     # install backend deps
     - kool docker kooldev/node:16 npm --prefix ./backend install
     # install frontend deps

@@ -3,3 +3,5 @@
 /backend/dist/
 /frontend/node_modules/
 /frontend/.next/
+/backend/shared
+/frontend/shared
