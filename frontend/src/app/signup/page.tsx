@@ -2,12 +2,12 @@
 import { Formik } from "formik";
 import { AuthButton } from "@/components/AuthButton";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function SignUp() {
   const router = useRouter();
   return (
-    <main className="w-100 h-auto min-h-screen flex flex-col items-center justify-center p-24 gap-12">
+    <div className="w-100 h-auto min-h-screen flex flex-col items-center justify-center p-24 gap-12">
       <h2 className={"font-rem text-5xl"}>Sign Up</h2>
 
       <Formik
@@ -27,7 +27,11 @@ export default function SignUp() {
           if (!values.confirm_password) {
             errors.password = "Reenter the password";
           }
-          if (!(values.password === values.confirm_password)) {
+          if (
+            values.password !== values.confirm_password &&
+            touched.password &&
+            touched.confirm_password
+          ) {
             errors.password = "Passwords don't match";
           }
           if (!values.gender) {
@@ -44,9 +48,11 @@ export default function SignUp() {
           return errors;
         }}
         onSubmit={async (values, { setSubmitting }) => {
-          alert(JSON.stringify(values, null, 2));
-          router.push("dashboard");
-          setSubmitting(false);
+          setTimeout(() => {
+            alert(JSON.stringify(values, null, 2));
+            router.push("dashboard");
+            setSubmitting(false);
+          }, 400);
         }}
       >
         {({
@@ -260,6 +266,6 @@ export default function SignUp() {
           </form>
         )}
       </Formik>
-    </main>
+    </div>
   );
 }

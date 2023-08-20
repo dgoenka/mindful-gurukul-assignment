@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import { AuthButton } from "@/components/AuthButton";
 export default function Home() {
   return (
-    <div className="w-100 h-auto min-h-screen flex flex-col items-center justify-center p-24 gap-12">
+    <main className="w-full h-auto min-h-screen flex flex-col items-center justify-center p-24 gap-12">
       <h2 className={"font-rem text-5xl"}>Login</h2>
 
       <Formik
@@ -43,10 +43,10 @@ export default function Home() {
           isSubmitting,
         }) => (
           <form
-            className={"flex flex-col gap-12 items-center justify-center"}
+            className={"w-3/5 flex flex-col gap-12 items-center justify-center"}
             onSubmit={handleSubmit}
           >
-            <div className={"flex flex-col items-center justify-center"}>
+            <div className={"w-full flex flex-col items-center justify-center"}>
               <input
                 className="rounded-full p-4 w-full font-rem text-xl"
                 type="email"
@@ -58,7 +58,7 @@ export default function Home() {
               />
               {errors.email && touched.email && errors.email}
             </div>
-            <div className={"flex flex-col items-center justify-center"}>
+            <div className={"w-full flex flex-col items-center justify-center"}>
               <input
                 className="rounded-full p-4 w-full font-rem text-xl"
                 type="password"
@@ -76,6 +76,6 @@ export default function Home() {
           </form>
         )}
       </Formik>
-    </div>
+    </main>
   );
 }
