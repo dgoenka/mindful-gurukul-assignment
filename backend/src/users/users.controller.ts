@@ -3,7 +3,7 @@ import { UsersService } from './users.service';
 import * as bcrypt from 'bcryptjs';
 import { User } from 'shared';
 
-@Controller('auth')
+@Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 

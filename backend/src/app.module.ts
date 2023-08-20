@@ -13,7 +13,6 @@ import mongoose from 'mongoose';
 })
 export class AppModule {
   onModuleInit() {
-    console.log('in onModuleInit');
     mongoose.connect(process.env.MONGO_URL);
   }
 }
