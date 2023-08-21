@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 export default function SignUp() {
   const router = useRouter();
   return (
-    <div className="w-100 h-auto min-h-screen flex flex-col items-center justify-center p-24 gap-12">
+    <main className="w-full h-auto min-h-screen flex flex-col items-center justify-center px-5 py-24 gap-12">
       <h2 className={"font-rem text-5xl"}>Sign Up</h2>
 
       <Formik
@@ -45,6 +45,18 @@ export default function SignUp() {
             errors.how_hear_other = "Please mention other source";
           }
 
+          if (!values.country) {
+            errors.country = "Please select a country";
+          }
+
+          if (!values.state) {
+            errors.country = "Please select a state";
+          }
+
+          if (!values.city) {
+            errors.country = "Please select a city";
+          }
+
           return errors;
         }}
         onSubmit={async (values, { setSubmitting }) => {
@@ -75,7 +87,9 @@ export default function SignUp() {
           isSubmitting,
         }) => (
           <form
-            className={"w-2/5 flex flex-col gap-5 items-center justify-center"}
+            className={
+              "w-full max-w-[480px]  flex flex-col gap-5 items-center justify-center"
+            }
             onSubmit={handleSubmit}
           >
             <div className={"w-full flex flex-col items-center justify-center"}>
@@ -130,7 +144,7 @@ export default function SignUp() {
                 errors.confirm_password}
             </div>
             <div className={"w-full flex flex-col items-center justify-center"}>
-              <span className={"font-rem text-xl"}>Gender</span>
+              <span className={"font-rem text-3xl"}>Gender</span>
               <div
                 className={
                   "flex flex-row items-center gap-2 justify-center font-rem text-xl"
@@ -166,7 +180,9 @@ export default function SignUp() {
                 "w-full flex flex-col items-center justify-center font-rem text-xl gap-3"
               }
             >
-              <span>How did you hear about us?</span>
+              <span className={"font-rem text-3xl"}>
+                How did you hear about us?
+              </span>
               <div
                 className={"grid grid-cols-2 gap-3 items-center justify-center"}
                 onChange={handleChange}
@@ -227,6 +243,7 @@ export default function SignUp() {
                   zIndex: 8,
                 }}
               />
+              {errors.country}
               <ReactSearchAutocomplete
                 fuseOptions={{ keys: ["name"] }} // Search on both fields
                 resultStringKeyName="name" // String to display in the results
@@ -242,6 +259,8 @@ export default function SignUp() {
                   zIndex: 5,
                 }}
               />
+              {errors.state}
+
               <ReactSearchAutocomplete
                 fuseOptions={{ keys: ["name"] }} // Search on both fields
                 resultStringKeyName="name" // String to display in the results
@@ -258,7 +277,7 @@ export default function SignUp() {
                   zIndex: 2,
                 }}
               />
-              {errors.location && touched.location && errors.location}
+              {errors.city}
             </div>
             <AuthButton type="submit" disabled={isSubmitting}>
               Save
@@ -266,6 +285,6 @@ export default function SignUp() {
           </form>
         )}
       </Formik>
-    </div>
+    </main>
   );
 }
