@@ -3,7 +3,7 @@ import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-
+import { AuthCredentials } from 'shared';
 @Injectable()
 export class AuthService {
   constructor(
@@ -23,7 +23,7 @@ export class AuthService {
     }
     return null;
   }
-  async login(user: any) {
+  async login(user: any): Promise<AuthCredentials> {
     const issued_at = Date.now();
     const payload = { username: user.username, sub: user._id };
     console.log('process.env is:\n' + JSON.stringify(process.env, null, 2));

@@ -5,9 +5,6 @@
 # Learn more at: https://kool.dev/docs/getting-started/how-it-works#koolyml
 scripts:
   setup:
-    # copy & link .env file
-    - cp -f .env.backend backend/.env
-    - cp -f .env.frontend frontend/.env
     # add shared dependancy
     - cd backend && npx relative-deps add ../shared && cd ..
     - cd frontend && npx relative-deps add ../shared && cd ..

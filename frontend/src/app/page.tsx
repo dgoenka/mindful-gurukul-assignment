@@ -1,6 +1,4 @@
-import { useRouter } from "next/router";
-import { AuthButton } from "@/components/AuthButton";
-import { router } from "next/client";
+import { AuthButton } from "../components/AuthButton";
 
 export default function Home() {
   return (

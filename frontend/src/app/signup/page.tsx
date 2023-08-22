@@ -1,6 +1,6 @@
 "use client";
 import { Formik } from "formik";
-import { AuthButton } from "@/components/AuthButton";
+import { AuthButton } from "../../components/AuthButton";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 import { useRouter } from "next/navigation";
 

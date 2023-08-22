@@ -1,9 +1,24 @@
 "use client";
 import { Formik } from "formik";
-import { AuthButton } from "@/components/AuthButton";
-export default function Home() {
+import { AuthButton } from "../../components/AuthButton";
+import { useStore } from "effector-react";
+import {
+  authCredentials,
+  login,
+  updateCredentials,
+} from "../../model/service/authService";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+export default function Login() {
+  const router = useRouter();
+  const authCredentialsUsage = useStore(authCredentials);
+  useEffect(() => {
+    const authInLocalStore = window.localStorage.getItem("authCredentials");
+    if (!authCredentialsUsage)
+      updateCredentials(authInLocalStore ? JSON.parse(authInLocalStore) : {});
+  }, []);
   return (
-    <main className="w-full h-auto min-h-screen flex flex-col items-center justify-center p-24 gap-12">
+    <div className="w-full h-auto min-h-screen flex flex-col items-center justify-center p-24 gap-12">
       <h2 className={"font-rem text-5xl"}>Login</h2>
 
       <Formik
@@ -20,9 +35,15 @@ export default function Home() {
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
+          setTimeout(async () => {
+            await login({
+              username: values.email,
+              password: values.password,
+            });
             setSubmitting(false);
+            if (login.done) {
+              await router.push("/dashboard");
+            }
           }, 400);
         }}
       >
@@ -48,7 +69,7 @@ export default function Home() {
           >
             <div className={"w-full flex flex-col items-center justify-center"}>
               <input
-                className="rounded-full p-4 w-full font-rem text-xl"
+                className="rounded-full p-4 w-full font-rem text-xl text-black"
                 type="email"
                 name="email"
                 placeholder="Email"
@@ -60,7 +81,7 @@ export default function Home() {
             </div>
             <div className={"w-full flex flex-col items-center justify-center"}>
               <input
-                className="rounded-full p-4 w-full font-rem text-xl"
+                className="rounded-full p-4 w-full font-rem text-xl text-black"
                 type="password"
                 name="password"
                 placeholder="Password"
@@ -76,6 +97,6 @@ export default function Home() {
           </form>
         )}
       </Formik>
-    </main>
+    </div>
   );
 }
