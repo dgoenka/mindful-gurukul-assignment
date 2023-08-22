@@ -1,7 +1,7 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { User, AuthCredentials } from "shared";
 import { instance } from "./axiosInstance";
-import { createEffect, createEvent, createStore } from "effector";
+import { createEffect, createEvent, createStore, Effect } from "effector";
 
 export const signUp = createEffect(async (signUpData: User) => {
   console.log(
@@ -85,4 +85,4 @@ export const updateCredentials = createEvent<Partial<AuthCredentials>>();
 // @ts-ignore
 authCredentials
   .on(updateCredentials, (_, creds) => creds)
-  .on(login.done, (_, creds) => creds);
+  .on(login.done, (_, creds) => creds.result);

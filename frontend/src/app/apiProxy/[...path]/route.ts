@@ -86,7 +86,6 @@ export async function POST(req: NextRequest) {
       sameSite: "lax",
       expires: authCredentials.issued_at + 24 * 60 * 60 * 1000,
     });
-    return NextResponse.json({ loggedIn: true }, { status: 200 });
   }
 
   return NextResponse.json(apiResponseBody, { status: 200 });

@@ -3,7 +3,7 @@ import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { AuthCredentials } from 'shared';
+import { User, AuthCredentials } from 'shared';
 @Injectable()
 export class AuthService {
   constructor(
@@ -23,7 +23,7 @@ export class AuthService {
     }
     return null;
   }
-  async login(user: any): Promise<AuthCredentials> {
+  async login(user): Promise<AuthCredentials> {
     const issued_at = Date.now();
     const payload = { username: user.username, sub: user._id };
     console.log('process.env is:\n' + JSON.stringify(process.env, null, 2));
@@ -37,11 +37,15 @@ export class AuthService {
       expiresIn: '7d',
     });
     console.log('refresh_token is:\n' + JSON.stringify(refresh_token, null, 2));
-    return {
+    let returnData = {
       access_token,
       refresh_token,
       issued_at,
-    };
+      userData: user,
+    } as unknown as AuthCredentials;
+    console.log('returnData is:\n' + JSON.stringify(returnData, null, 2));
+
+    return returnData;
   }
 
   async refreshToken(token: string) {

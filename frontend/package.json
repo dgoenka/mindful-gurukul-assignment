@@ -22,6 +22,7 @@
     "eslint-config-next": "13.4.18",
     "formik": "^2.4.3",
     "http-proxy": "^1.18.1",
+    "libphonenumber-js": "^1.10.41",
     "next": "13.4.18",
     "postcss": "8.4.28",
     "react": "18.2.0",

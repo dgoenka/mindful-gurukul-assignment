@@ -9,7 +9,9 @@ export class UsersService {
     this.userModel = mongoose.model('User', UserSchema);
   }
   async createUser(
+    name: string,
     username: string,
+    phone: string,
     password: string,
     gender: string,
     how_hear: string,
@@ -19,8 +21,10 @@ export class UsersService {
     city: string,
   ): Promise<User> {
     return this.userModel.create({
+      name,
       username,
       password,
+      phone,
       gender,
       how_hear,
       how_hear_other,

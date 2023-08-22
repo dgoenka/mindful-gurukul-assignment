@@ -2,21 +2,13 @@
 import { Formik } from "formik";
 import { AuthButton } from "../../components/AuthButton";
 import { useStore } from "effector-react";
-import {
-  authCredentials,
-  login,
-  updateCredentials,
-} from "../../model/service/authService";
+import { authCredentials, login } from "../../model/service/authService";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 export default function Login() {
   const router = useRouter();
   const authCredentialsUsage = useStore(authCredentials);
-  useEffect(() => {
-    const authInLocalStore = window.localStorage.getItem("authCredentials");
-    if (!authCredentialsUsage)
-      updateCredentials(authInLocalStore ? JSON.parse(authInLocalStore) : {});
-  }, []);
+
   return (
     <div className="w-full h-auto min-h-screen flex flex-col items-center justify-center p-24 gap-12">
       <h2 className={"font-rem text-5xl"}>Login</h2>

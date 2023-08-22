@@ -4,7 +4,8 @@ import { AuthButton } from "../../components/AuthButton";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 import { useRouter } from "next/navigation";
 import { signUp } from "../../model/service/authService";
-
+import { User } from "shared";
+import { isValidPhoneNumber } from "libphonenumber-js";
 export default function SignUp() {
   const router = useRouter();
   return (
@@ -12,9 +13,24 @@ export default function SignUp() {
       <h2 className={"font-rem text-5xl"}>Sign Up</h2>
 
       <Formik
-        initialValues={{ username: "", password: "" }}
+        initialValues={{
+          name: "",
+          username: "",
+          password: "",
+          phone: "",
+          confirm_password: "",
+          gender: "",
+          how_hear: "",
+          how_hear_other: "",
+          country: "",
+          state: "",
+          city: "",
+        }}
         validate={(values) => {
           const errors: any = {};
+          if (!values.name) {
+            errors.name = "Required";
+          }
           if (!values.username) {
             errors.username = "Required";
           } else if (
@@ -22,16 +38,22 @@ export default function SignUp() {
           ) {
             errors.username = "Invalid email address";
           }
+
+          if (!values.phone) {
+            errors.phone = "Required";
+          } else if (!isValidPhoneNumber(values.phone)) {
+            errors.phone = "Invalid phone number";
+          }
           if (!values.password) {
             errors.password = "Enter a password";
           }
           if (!values.confirm_password) {
-            errors.password = "Reenter the password";
+            errors.confirm_password = "Reenter the password";
           }
           if (
             values.password !== values.confirm_password &&
-            touched.password &&
-            touched.confirm_password
+            values.password &&
+            values.confirm_password
           ) {
             errors.password = "Passwords don't match";
           }
@@ -51,18 +73,18 @@ export default function SignUp() {
           }
 
           if (!values.state) {
-            errors.country = "Please select a state";
+            errors.state = "Please select a state";
           }
 
           if (!values.city) {
-            errors.country = "Please select a city";
+            errors.city = "Please select a city";
           }
 
           return errors;
         }}
         onSubmit={async (values, { setSubmitting }) => {
           setTimeout(async () => {
-            await signUp(values);
+            await signUp(values as unknown as User);
             router.push("/login");
             setSubmitting(false);
           }, 400);
@@ -144,6 +166,18 @@ export default function SignUp() {
               {errors.confirm_password &&
                 touched.confirm_password &&
                 errors.confirm_password}
+            </div>
+            <div className={"w-full flex flex-col items-center justify-center"}>
+              <input
+                className="rounded-full p-4 w-full font-rem text-xl text-black"
+                type="phone"
+                name="phone"
+                placeholder="Phone"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.phone}
+              />
+              {errors.phone && touched.phone && errors.phone}
             </div>
             <div className={"w-full flex flex-col items-center justify-center"}>
               <span className={"font-rem text-3xl"}>Gender</span>
@@ -243,7 +277,6 @@ export default function SignUp() {
                 placeholder={"Country"}
                 styling={{
                   zIndex: 8,
-                  autoComplete: "off",
                 }}
                 showItemsOnFocus={true}
                 showNoResults={true}
