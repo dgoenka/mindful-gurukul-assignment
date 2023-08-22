@@ -80,7 +80,7 @@ export const authCredentials = createStore<Partial<AuthCredentials> | null>(
   null,
 );
 
-export const updateCredentials = createEvent<Partial<AuthCredentials>>();
+export const updateCredentials = createEvent<Partial<AuthCredentials> | null>();
 
 // @ts-ignore
 authCredentials
