@@ -29,11 +29,20 @@ export async function POST(req: NextRequest) {
   console.log("pathname is:\n" + pathname);
   const headers = req.headers;
   console.log("headers is:\n" + headers);
-  const body = await req.json();
+  let body;
+  try {
+    body = await req.json();
+  } catch (err) {}
   console.log("body is:\n" + JSON.stringify(body, null, 2));
 
   const isLogin = pathname === "/auth/login";
+  const isSignOut = pathname === "/auth/signOut";
   console.log("isLogin is:\n" + JSON.stringify(body, null, 2));
+
+  if (isSignOut) {
+    cookies().delete("auth-token");
+    return NextResponse.json({ loggedIn: true }, { status: 200 });
+  }
 
   // Get the `auth-token` cookie:
   const authToken: Partial<AuthCredentials> = req.cookies.get("auth-token")
@@ -75,6 +84,7 @@ export async function POST(req: NextRequest) {
     cookies().set("auth-token", JSON.stringify(authCredentials), {
       httpOnly: true,
       sameSite: "lax",
+      expires: authCredentials.issued_at + 24 * 60 * 60 * 1000,
     });
     return NextResponse.json({ loggedIn: true }, { status: 200 });
   }

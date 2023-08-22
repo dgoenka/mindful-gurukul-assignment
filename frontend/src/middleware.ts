@@ -21,9 +21,9 @@ export function middleware(request: NextRequest) {
         );
       }
     } else {
-      if (request.nextUrl.pathname === "/") {
+      if (OPEN_ROUTES.includes(request.nextUrl.pathname)) {
         console.log("redirecting to dashboard");
-        redirect(`/dashboard`);
+        NextResponse.redirect(new URL("/dashboard", request.url));
       }
     }
   }

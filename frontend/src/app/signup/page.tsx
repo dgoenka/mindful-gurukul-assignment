@@ -3,6 +3,7 @@ import { Formik } from "formik";
 import { AuthButton } from "../../components/AuthButton";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 import { useRouter } from "next/navigation";
+import { signUp } from "../../model/service/authService";
 
 export default function SignUp() {
   const router = useRouter();
@@ -11,15 +12,15 @@ export default function SignUp() {
       <h2 className={"font-rem text-5xl"}>Sign Up</h2>
 
       <Formik
-        initialValues={{ email: "", password: "" }}
+        initialValues={{ username: "", password: "" }}
         validate={(values) => {
           const errors: any = {};
-          if (!values.email) {
-            errors.email = "Required";
+          if (!values.username) {
+            errors.username = "Required";
           } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.username)
           ) {
-            errors.email = "Invalid email address";
+            errors.username = "Invalid email address";
           }
           if (!values.password) {
             errors.password = "Enter a password";
@@ -60,9 +61,9 @@ export default function SignUp() {
           return errors;
         }}
         onSubmit={async (values, { setSubmitting }) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            router.push("dashboard");
+          setTimeout(async () => {
+            await signUp(values);
+            router.push("/login");
             setSubmitting(false);
           }, 400);
         }}
@@ -91,10 +92,11 @@ export default function SignUp() {
               "w-full max-w-[480px]  flex flex-col gap-5 items-center justify-center"
             }
             onSubmit={handleSubmit}
+            autoComplete={"off"}
           >
             <div className={"w-full flex flex-col items-center justify-center"}>
               <input
-                className="rounded-full p-4 w-full font-rem text-xl"
+                className="rounded-full p-4 w-full font-rem text-xl text-black"
                 type="text"
                 name="name"
                 placeholder="Name"
@@ -106,15 +108,15 @@ export default function SignUp() {
             </div>
             <div className={"w-full flex flex-col items-center justify-center"}>
               <input
-                className="rounded-full p-4 w-full font-rem text-xl"
+                className="rounded-full p-4 w-full font-rem text-xl text-black"
                 type="email"
-                name="email"
+                name="username"
                 placeholder="Username"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.email}
+                value={values.username}
               />
-              {errors.email && touched.email && errors.email}
+              {errors.username && touched.username && errors.username}
             </div>
 
             <div className={"w-full flex flex-col items-center justify-center"}>
@@ -208,7 +210,7 @@ export default function SignUp() {
                   className={"w-full flex flex-col items-center justify-center"}
                 >
                   <input
-                    className="rounded-full p-4 w-full font-rem text-xl"
+                    className="rounded-full p-4 w-full font-rem text-xl text-black"
                     type="text"
                     name="how_hear_other"
                     placeholder="Mention Here"
@@ -241,7 +243,10 @@ export default function SignUp() {
                 placeholder={"Country"}
                 styling={{
                   zIndex: 8,
+                  autoComplete: "off",
                 }}
+                showItemsOnFocus={true}
+                showNoResults={true}
               />
               {errors.country}
               <ReactSearchAutocomplete
@@ -258,6 +263,8 @@ export default function SignUp() {
                 styling={{
                   zIndex: 5,
                 }}
+                showItemsOnFocus={true}
+                showNoResults={true}
               />
               {errors.state}
 
@@ -276,6 +283,8 @@ export default function SignUp() {
                 styling={{
                   zIndex: 2,
                 }}
+                showItemsOnFocus={true}
+                showNoResults={true}
               />
               {errors.city}
             </div>

@@ -1,5 +1,10 @@
+"use client";
+import PrivateRoute from "../../components/private-route/PrivateRoute";
+
 export default function Home() {
   return (
-    <main className="w-100 h-auto min-h-screen flex  items-center justify-center " />
+    <PrivateRoute>
+      <div>Hello</div>
+    </PrivateRoute>
   );
 }

@@ -4,12 +4,15 @@ import { instance } from "./axiosInstance";
 import { createEffect, createEvent, createStore } from "effector";
 
 export const signUp = createEffect(async (signUpData: User) => {
+  console.log(
+    "in signUp, signUpData is:\n" + JSON.stringify(signUpData, null, 2),
+  );
   let data = JSON.stringify(signUpData);
 
   let config = {
     method: "post",
     maxBodyLength: Infinity,
-    url: "/users/signup",
+    url: `${process.env.BASE_URL}/users/signup`,
     headers: {
       "Content-Type": "application/json",
     },
@@ -43,6 +46,28 @@ export const login = createEffect(
         "Content-Type": "application/json",
       },
       data: data,
+    };
+
+    let response: AxiosResponse<Partial<AuthCredentials>> =
+      await instance.request(config);
+
+    return response.data;
+  },
+);
+
+export const signOut = createEffect(
+  async (): Promise<Partial<AuthCredentials>> => {
+    console.log(
+      "in login effect, process.env.BASE_URL is: " + process.env.BASE_URL,
+    );
+
+    let config: AxiosRequestConfig = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${process.env.BASE_URL}/auth/signOut`,
+      headers: {
+        "Content-Type": "application/json",
+      },
     };
 
     let response: AxiosResponse<Partial<AuthCredentials>> =
