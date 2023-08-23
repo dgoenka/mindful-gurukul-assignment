@@ -1,6 +1,6 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { User, AuthCredentials } from "shared";
-import { instance } from "./axiosInstance";
+import { instance } from "../axiosInstance";
 import { createEffect, createEvent, createStore, Effect } from "effector";
 
 export const signUp = createEffect(async (signUpData: User) => {
@@ -55,6 +55,24 @@ export const login = createEffect(
   },
 );
 
+export const me = createEffect(async (): Promise<Partial<AuthCredentials>> => {
+  console.log("in me effect, process.env.BASE_URL is: " + process.env.BASE_URL);
+
+  let config: AxiosRequestConfig = {
+    method: "post",
+    maxBodyLength: Infinity,
+    url: `${process.env.BASE_URL}/auth/me`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  let response: AxiosResponse<Partial<AuthCredentials>> =
+    await instance.request(config);
+
+  return response.data;
+});
+
 export const signOut = createEffect(
   async (): Promise<Partial<AuthCredentials>> => {
     console.log(
@@ -85,4 +103,5 @@ export const updateCredentials = createEvent<Partial<AuthCredentials> | null>();
 // @ts-ignore
 authCredentials
   .on(updateCredentials, (_, creds) => creds)
-  .on(login.done, (_, creds) => creds.result);
+  .on(login.done, (_, { result }) => result)
+  .on(me.done, (_, { result }) => result);

@@ -1,21 +1,8 @@
-import httpProxy from "http-proxy";
-import Cookies from "cookies";
 import { AuthCredentials } from "shared";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 
-// Get the actual API_URL as an environment variable. For real
-// applications, you might want to get it from 'next/config' instead.
-const API_URL = process.env.API_URL;
-
-const proxy = httpProxy.createProxyServer();
-
-// You can export a config variable from any API apiProxyMiddleware in Next.js.
-// We'll use this to disable the bodyParser, otherwise Next.js
-// would read and parse the entire request body before we
-// can forward the request to the API. By skipping the bodyParser,
-// we can just stream all requests through to the actual API.
 export const config = {
   api: {
     bodyParser: false,
@@ -37,19 +24,25 @@ export async function POST(req: NextRequest) {
 
   const isLogin = pathname === "/auth/login";
   const isSignOut = pathname === "/auth/signOut";
+  const isMe = pathname === "/auth/me";
   console.log("isLogin is:\n" + JSON.stringify(body, null, 2));
 
   if (isSignOut) {
     cookies().delete("auth-token");
-    return NextResponse.json({ loggedIn: true }, { status: 200 });
+    return NextResponse.json({ loggedIn: false }, { status: 200 });
   }
 
   // Get the `auth-token` cookie:
   const authToken: Partial<AuthCredentials> = req.cookies.get("auth-token")
     ?.value
-    ? JSON.parse(cookies().get("auth-token")?.value)
+    ? JSON.parse(cookies().get("auth-token")?.value || "null")
     : {};
   console.log("authToken is:\n" + JSON.stringify(authToken, null, 2));
+
+  if (isMe) {
+    if (authToken) return NextResponse.json(authToken, { status: 200 });
+    else return NextResponse.json({ loggedIn: false }, { status: 400 });
+  }
 
   headers.set("cookie", "");
 

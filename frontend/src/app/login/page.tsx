@@ -1,8 +1,8 @@
 "use client";
 import { Formik } from "formik";
-import { AuthButton } from "../../components/AuthButton";
+import { AuthButton } from "../../components/buttons/AuthButton";
 import { useStore } from "effector-react";
-import { authCredentials, login } from "../../model/service/authService";
+import { authCredentials, login } from "../../model/auth/authService";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 export default function Login() {
@@ -28,12 +28,12 @@ export default function Login() {
         }}
         onSubmit={(values, { setSubmitting }) => {
           setTimeout(async () => {
-            await login({
+            const res = await login({
               username: values.email,
               password: values.password,
             });
             setSubmitting(false);
-            if (login.done) {
+            if (res) {
               await router.push("/dashboard");
             }
           }, 400);

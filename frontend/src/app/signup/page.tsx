@@ -1,9 +1,9 @@
 "use client";
 import { Formik } from "formik";
-import { AuthButton } from "../../components/AuthButton";
+import { AuthButton } from "../../components/buttons/AuthButton";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 import { useRouter } from "next/navigation";
-import { signUp } from "../../model/service/authService";
+import { signUp } from "../../model/auth/authService";
 import { User } from "shared";
 import { isValidPhoneNumber } from "libphonenumber-js";
 export default function SignUp() {
