@@ -49,17 +49,21 @@ export default function PrivateRoute({ children }: { children: ReactNode }) {
                 </>
               ) : null}
               <button
+                // @ts-ignore
                 onClick={
                   authCredentialsUsage
-                    ? async () => {
-                        await signOut();
-                        updateCredentials(null);
+                    ? () => {
+                        signOut().then(() => router.push("/"));
                       }
                     : undefined
                 }
                 className={"font-bold text-base text-gray-700"}
               >
-                {authCredentialsUsage ? "Sign Out" : "Signed Out"}
+                {authCredentialsUsage
+                  ? "Sign Out"
+                  : me.pending
+                  ? "Retrieving..."
+                  : "Signed Out"}
               </button>
             </div>
           </div>

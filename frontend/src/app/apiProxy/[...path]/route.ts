@@ -25,7 +25,10 @@ export async function POST(req: NextRequest) {
   const isLogin = pathname === "/auth/login";
   const isSignOut = pathname === "/auth/signOut";
   const isMe = pathname === "/auth/me";
-  console.log("isLogin is:\n" + JSON.stringify(body, null, 2));
+
+  console.log("isLogin is: " + JSON.stringify(isLogin, null, 2));
+  console.log("isSignOut is: " + JSON.stringify(isSignOut, null, 2));
+  console.log("isMe is: " + JSON.stringify(isMe, null, 2));
 
   if (isSignOut) {
     cookies().delete("auth-token");
@@ -36,7 +39,7 @@ export async function POST(req: NextRequest) {
   const authToken: Partial<AuthCredentials> = req.cookies.get("auth-token")
     ?.value
     ? JSON.parse(cookies().get("auth-token")?.value || "null")
-    : {};
+    : null;
   console.log("authToken is:\n" + JSON.stringify(authToken, null, 2));
 
   if (isMe) {

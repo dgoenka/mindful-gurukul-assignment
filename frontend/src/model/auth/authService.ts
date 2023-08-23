@@ -104,4 +104,5 @@ export const updateCredentials = createEvent<Partial<AuthCredentials> | null>();
 authCredentials
   .on(updateCredentials, (_, creds) => creds)
   .on(login.done, (_, { result }) => result)
+  .on(signOut.done, () => null)
   .on(me.done, (_, { result }) => result);

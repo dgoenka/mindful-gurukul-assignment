@@ -23,7 +23,7 @@ export function middleware(request: NextRequest) {
     } else {
       if (OPEN_ROUTES.includes(request.nextUrl.pathname)) {
         console.log("redirecting to dashboard");
-        NextResponse.redirect(new URL("/dashboard", request.url));
+        return NextResponse.redirect(new URL("/dashboard", request.url));
       }
     }
   }
